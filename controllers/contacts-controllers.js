@@ -1,19 +1,19 @@
-const Joi = require('joi');
+// const Joi = require('joi');
 
 const contactsService = require('../models/contacts');
 const HttpError = require('../helpers/HttpError');
 
-const contactAddSchema = Joi.object({
-	name: Joi.string().required().messages({
-		'any.required': `missing required name field`,
-	}),
-	email: Joi.string().required().messages({
-		'any.required': `missing required email field`,
-	}),
-	phone: Joi.string().required().messages({
-		'any.required': `missing required phone field`,
-	}),
-});
+// const contactAddSchema = Joi.object({
+// 	name: Joi.string().required().messages({
+// 		'any.required': `missing required name field`,
+// 	}),
+// 	email: Joi.string().required().messages({
+// 		'any.required': `missing required email field`,
+// 	}),
+// 	phone: Joi.string().required().messages({
+// 		'any.required': `missing required phone field`,
+// 	}),
+// });
 
 const listContacts = async (req, res, next) => {
 	try {
@@ -41,10 +41,14 @@ const getContactById = async (req, res, next) => {
 
 const addContact = async (req, res, next) => {
 	try {
-		const { error } = contactAddSchema.validate(req.body);
-		if (error) {
-			throw HttpError(400, error.message);
+		if (!req.body.name && !req.body.email && !req.body.phone) {
+			throw HttpError(400, 'missing fields');
 		}
+
+		// const { error } = contactAddSchema.validate(req.body);
+		// if (error) {
+		// 	throw HttpError(400, error.message);
+		// }
 
 		const { name, email, phone } = req.body;
 		const result = await contactsService.addContact(name, email, phone);
@@ -73,10 +77,10 @@ const removeContact = async (req, res, next) => {
 
 const updateContactById = async (req, res, next) => {
 	try {
-		const { error } = contactAddSchema.validate(req.body);
-		if (error) {
-			throw HttpError(400, 'missing fields');
-		}
+		// const { error } = contactAddSchema.validate(req.body);
+		// if (error) {
+		// 	throw HttpError(400, 'missing fields');
+		// }
 
 		const { contactId } = req.params;
 		const result = await contactsService.updateContactById(contactId, req.body);
