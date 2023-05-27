@@ -58,10 +58,6 @@ const removeContact = async (req, res, next) => {
 
 const updateContactById = async (req, res, next) => {
 	try {
-		if (!req.body.name && !req.body.email && !req.body.phone) {
-			throw HttpError(400, 'missing fields');
-		}
-
 		const { contactId } = req.params;
 		const result = await contactsService.updateContactById(contactId, req.body);
 
