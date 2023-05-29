@@ -33,8 +33,7 @@ const updateContactById = async (id, data) => {
 	if (index === -1) {
 		return null;
 	}
-	const newId = nanoid();
-	contacts[index] = { id: newId, ...data };
+	contacts[index] = { id, ...data };
 	await fs.writeFile(contactsPath, JSON.stringify(contacts, null, 2));
 	return contacts[index];
 };
