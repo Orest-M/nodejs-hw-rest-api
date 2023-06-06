@@ -1,5 +1,8 @@
 const express = require('express');
-const contactAddSchema = require('../../schemas/contacts-schemas');
+const {
+	contactAddSchema,
+	updateFavoriteSchema,
+} = require('../../schemas/contacts-schemas');
 const validateBody = require('../../decorators/validateBody');
 const validateAllBody = require('../../decorators/validateAllBody');
 
@@ -9,6 +12,7 @@ const {
 	addContact,
 	removeContact,
 	updateContactById,
+	updateStatusContact,
 } = require('../../controllers/contacts-controllers');
 
 const router = express.Router();
@@ -26,6 +30,12 @@ router.put(
 	validateAllBody(),
 	validateBody(contactAddSchema),
 	updateContactById
+);
+
+router.patch(
+	'/:contactId/favorite',
+	validateBody(updateFavoriteSchema),
+	updateStatusContact
 );
 
 module.exports = router;
