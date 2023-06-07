@@ -1,10 +1,13 @@
-// const contactsService = require('../models/contacts');
 const HttpError = require('../helpers/HttpError');
 const Contact = require('../schemas/mongoose-schema');
 
 const listContacts = async (req, res, next) => {
 	try {
-		const contacts = await Contact.find();
+		const { _id: owner } = req.user;
+		const contacts = await Contact.find({ owner }).populate(
+			'owner',
+			'email subscription'
+		);
 		res.json(contacts);
 	} catch (error) {
 		next(error);
@@ -32,8 +35,10 @@ const addContact = async (req, res, next) => {
 			throw HttpError(400, 'missing fields');
 		}
 
+		const { _id: owner } = req.user;
 		const { name, email, phone } = req.body;
-		const result = await Contact.create({ name, email, phone });
+		const result = await Contact.create({ name, email, phone, owner });
+
 		res.status(201).json(result);
 	} catch (error) {
 		next(error);

@@ -5,6 +5,7 @@ const {
 } = require('../../schemas/contacts-schemas');
 const validateBody = require('../../decorators/validateBody');
 const validateAllBody = require('../../decorators/validateAllBody');
+const authenticate = require('../../middlewares/authenticate');
 
 const {
 	listContacts,
@@ -16,6 +17,8 @@ const {
 } = require('../../controllers/contacts-controllers');
 
 const router = express.Router();
+
+router.use(authenticate);
 
 router.get('/', listContacts);
 
