@@ -22,9 +22,14 @@ const register = async (req, res, next) => {
 			password: newPass,
 		};
 
-		await User.create(user);
+		const newUser = await User.create(user);
 
-		res.status(201).json(user);
+		res.status(201).json({
+			user: {
+				email: newUser.email,
+				subscription: newUser.subscription,
+			},
+		});
 	} catch (error) {
 		next(error);
 	}
