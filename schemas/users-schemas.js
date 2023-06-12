@@ -9,4 +9,10 @@ const userSchema = Joi.object({
 	}),
 });
 
-module.exports = { userSchema };
+const verifySchema = Joi.object({
+	email: Joi.string().required().messages({
+		'any.required': `missing required field email`,
+	}),
+});
+
+module.exports = { userSchema, verifySchema };

@@ -9,8 +9,10 @@ const {
 	logout,
 	getCurrent,
 	changeAvatar,
+	verifyEmail,
+	verifyEmailAgain,
 } = require('../../controllers/auth-controllers');
-const { userSchema } = require('../../schemas/users-schemas');
+const { userSchema, verifySchema } = require('../../schemas/users-schemas');
 
 const router = express.Router();
 const jsonParser = express.json();
@@ -24,5 +26,9 @@ router.post('/logout', authenticate, logout);
 router.get('/current', authenticate, getCurrent);
 
 router.patch('/avatars', authenticate, upload.single('avatar'), changeAvatar);
+
+router.get('/verify/:verificationToken', verifyEmail);
+
+router.post('/verify', validateBody(verifySchema), verifyEmailAgain);
 
 module.exports = router;
